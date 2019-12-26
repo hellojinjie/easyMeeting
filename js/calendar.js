@@ -323,7 +323,7 @@ $(function() {
    * 跳转到path指定的页面
    */
   function redirect(path) {
-    window.location.pathname = "/easyMeeting" + path;
+    window.location.pathname = path;
   }
 
   /*
@@ -333,7 +333,7 @@ $(function() {
   function requestLogin(user_info) {
     $.ajax({
       method: "POST",
-      url: "/easyMeeting/signin",
+      url: "/signin",
       contentType: "application/json;charset='utf-8'",
       data: JSON.stringify(user_info)
     }).done(function(response_body) {
@@ -373,12 +373,13 @@ $(function() {
         "<div class=card-title>{{title}}</div>" +
         "<div class='card-info{{ishide}}'>" +
           "<div><span class='badge badge-normal'>{{room}}</span></div>" +
-          "<span class='badge badge-danger'>{{start}}</span><span class=badge>{{end}}</span>" +
+          "<span class='badge badge-danger'>{{start}}</span><span class=badge>{{end}}</span><a data-timestamp='{{timestampe}}' href='javascript:void(0)' class='badge badge-warning delete-meeting'>删除</a>" +
           "</div>" +
       "</div>";
 
     meeting_card_template = meeting_card_template.replace(/{{ishide}}/, ishide ? " hide" : "");
     meeting_card_template = meeting_card_template.replace(/{{id}}/, id);
+    meeting_card_template = meeting_card_template.replace(/{{timestampe}}/, id);
     meeting_card_template = meeting_card_template.replace(/{{title}}/, title);
     meeting_card_template = meeting_card_template.replace(/{{room}}/, room);
     meeting_card_template = meeting_card_template.replace(/{{start}}/, start);
@@ -393,7 +394,7 @@ $(function() {
   function queryMeetingsForMonthView(range_timestamp) {
     $.ajax({
       method: "POST",
-      url: "/easyMeeting/querymeetings",
+      url: "/querymeetings",
       contentType: "application/json;charset='utf-8'",
       data: JSON.stringify(range_timestamp)
     }).done(function(response_meetings) {
@@ -418,7 +419,7 @@ $(function() {
   function queryMeetingsForWeekView(range_timestamp) {
     $.ajax({
       method: "POST",
-      url: "/easyMeeting/querymeetings",
+      url: "/querymeetings",
       contentType: "application/json;charset='utf-8'",
       data: JSON.stringify(range_timestamp)
     }).done(function(response_meetings) {
@@ -570,6 +571,20 @@ $(function() {
   $(".calendar-content").on("click", ".close-btn", function() {
     $(this).parent().parent().removeClass("active")
       .find(".card-info").addClass("hide");
+  });
+
+  // 删除会议
+  $(".calendar-content").on("click", ".delete-meeting", function() {
+    let timestamp = $(this).data('timestamp');
+    let that = this;
+    $.ajax({
+      method: "POST",
+      url: "/deletemeeting",
+      contentType: "application/json;charset='utf-8'",
+      data: JSON.stringify({timestamp: timestamp})
+    }).done(function() {
+      $(that).parent().parent().remove();
+    });
   });
 
   // 周视图、月视图某日扩展下点击预定会议室链接弹出预定会议室弹出框，采用事件委托方式
@@ -830,7 +845,7 @@ $(function() {
       // 发送ajax请求到server进行预定会议室
       $.ajax({
         method: "POST",
-        url: "/easyMeeting/addmeeting",
+        url: "/addmeeting",
         contentType: "application/json;charset='utf-8'",
         data: JSON.stringify(meeting_info)
       }).done(function(meeting_info) {
@@ -885,7 +900,7 @@ $(function() {
     // 请求月视图会议室数据
     $.ajax({
       method: "POST",
-      url: "/easyMeeting/querymeetings",
+      url: "/querymeetings",
       contentType: "application/json;charset='utf-8'",
       data: JSON.stringify(month_view_range)
     }).done(function(response_meetings) {
@@ -915,7 +930,7 @@ $(function() {
     // 请求周视图会议室数据
     $.ajax({
       method: "POST",
-      url: "/easyMeeting/querymeetings",
+      url: "/querymeetings",
       contentType: "application/json;charset='utf-8'",
       data: JSON.stringify(week_view_range)
     }).done(function(response_meetings) {

@@ -16,19 +16,19 @@
 <body>
   <div class="signup-or-signin">
     <header>
-      <h1>easyMeeting</h1>
+	    <h3>大数据智能研究中心</h3>
       <h2>简单地预定、管理会议</h2>
     </header>
 
     <main class="sign-flow">
-      <div class="sign-tab-navs">
-        <span class="to-signup active">注册</span>
-        <span class="to-signin">登录</span>
+      <div class="sign-tab-navs hide">
+        <span class="to-signup">注册</span>
+        <span class="to-signin active">登录</span>
       </div>
 
       <div class="sign-form">
 	      <!-- 注册  -->
-        <div class="signup-form">
+        <div class="signup-form hide">
           <div class="signup-input">
             <div id="username" class="signup-info">
               <input type="text" name="username" placeholder="用户名">
@@ -50,25 +50,25 @@
         </div>
 
 	      <!-- 登录  -->
-        <div class="signin-form hide">
-          <div class="signin-input">
-            <input type="text" name="username" placeholder="用户名">
-            <input type="password" name="password" placeholder="密码">
+        <div class="signin-form">
+          <div class="signin-input hide">
+            <input type="text" name="username" value='zx' placeholder="用户名">
+            <input type="password" name="password" value="123" placeholder="密码">
           </div>
 	        <div class="alert hide"></div>
-          <button class="btn btn-signin" type="submit">登录</button>
-          <div class="rember-user pull-left">
+          <button class="btn btn-signin" type="submit">开始使用</button>
+          <div class="rember-user pull-left hide">
             <input type="checkbox" name="rember-me" checked>
 	          <label for="rember-me">记住我</label>
           </div>
-          <div class="forgot-passwod pull-right"><a href="#">忘记密码?</a></div>
+          <div class="forgot-passwod pull-right hide"><a href="#">忘记密码?</a></div>
         </div>
       </div>
     </main>
   </div>
 
   <footer>
-    <span>@2016 PepperPapa | zhongxin2506@outlook.com</span>
+    <span></span>
   </footer>
 </body>
 </html>

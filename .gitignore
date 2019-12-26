@@ -2,3 +2,7 @@ node_modules/
 __pycache__/
 .eslintrc.json
 *~
+venv
+*.pyc
+meeting.log
+meeting-err.log

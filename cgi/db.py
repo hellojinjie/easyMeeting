@@ -6,7 +6,7 @@ import sqlite3
 import time
 
 def connectDatabase():
-    conn = sqlite3.connect("/home/zx/projects/easyMeeting/cgi/easymeeting.db")
+    conn = sqlite3.connect("cgi/easymeeting.db")
     return (conn, conn.cursor())
 
 """
@@ -73,6 +73,7 @@ def createMeetingTable():
                          END TEXT NOT NULL);""")
     return (conn, cursor)
 
+
 def addMeeting(timestamp, title, room, start, end):
     id = int(time.time() * 10000000)
     # 如果meetings不存在则首先创建表meetings
@@ -103,6 +104,16 @@ def addMeeting(timestamp, title, room, start, end):
             "end": meeting[5]
         }
 
+
+def deleteMeeting(timestamp):
+    conn, cursor = createMeetingTable()
+    cursor.execute(
+        """delete from meetings where id = {}""".format(timestamp)
+        )
+    conn.commit()
+    conn.close()
+
+
 def queryMeetings(start_timestamp, end_timestamp):
     conn, cursor = createMeetingTable()
     cursor.execute("""SELECT * FROM meetings
@@ -110,6 +121,7 @@ def queryMeetings(start_timestamp, end_timestamp):
                   TIMESTAMP <= {}""".format(start_timestamp, end_timestamp))
     meetings = cursor.fetchall()
     return meetings
+
 
 if __name__ == '__main__':
     print(queryMeetings("1464451200000", "1478966400000"))

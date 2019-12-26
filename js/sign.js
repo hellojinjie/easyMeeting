@@ -128,7 +128,7 @@ $(function() {
       // 发送ajax请求到server进行用户注册
       $.ajax({
         method: "POST",
-        url: "/easyMeeting/signup",
+        url: "/signup",
         contentType: "application/json;charset='utf-8'",
         data: JSON.stringify(signup_info)
       }).done(function(response_body) {
@@ -155,13 +155,13 @@ $(function() {
    * 跳转到path指定的页面
    */
   function redirect(path) {
-    window.location.pathname = "/easyMeeting" + path;
+    window.location.pathname = path;
   }
 
   function requestLogin(data) {
     $.ajax({
       method: "POST",
-      url: "/easyMeeting/signin",
+      url: "/signin",
       contentType: "application/json;charset='utf-8'",
       data: JSON.stringify(data)
     }).done(function(response_body) {

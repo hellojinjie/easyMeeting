@@ -56,6 +56,16 @@ def handleAddMeeting(environ):
                                 json_body["end"])
     return new_meeting
 
+def handleDeleteMeeting(environ):
+    json_body_length = int(environ['CONTENT_LENGTH'])
+    json_body = environ['wsgi.input'].read(json_body_length).decode('utf-8')
+    # json format-
+    #      {timestamp: xx, title: xx, room: xx, start: xx, end: xx}
+    json_body = json.loads(json_body)
+    print(json_body)
+    db.deleteMeeting(json_body["timestamp"])
+    return []
+
 def handleQueryMeeting(environ):
     json_body_length = int(environ['CONTENT_LENGTH'])
     json_body = environ['wsgi.input'].read(json_body_length).decode('utf-8')
@@ -77,7 +87,7 @@ def showEnviron(environ):
 
 def application(environ, start_response):
     url = environ['PATH_INFO']    # /easyMeeting/xxxx
-    url = url.split("/")[2]
+    url = url.split("/")[1]
     print(url)
     if url == "signup":
         start_response('200 OK',
@@ -111,8 +121,14 @@ def application(environ, start_response):
         start_response('200 OK',
                        [('Content-Type','application/json;charset="utf-8"')])
         body = handleAddMeeting(environ)
-        #html += showEnviron(environ)
+        # html += showEnviron(environ)
         return [json.dumps(body).encode("utf-8")]
+    elif url == "deletemeeting":
+        start_response('200 OK',
+                       [('Content-Type', 'application/json;charset="utf-8"')])
+        handleDeleteMeeting(environ)
+        # html += showEnviron(environ)
+        return []
     elif url == "querymeetings":
         start_response('200 OK',
                        [('Content-Type','application/json;charset="utf-8"')])
